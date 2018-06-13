@@ -731,7 +731,7 @@ class MVC{
 				echo "<script>swal('Error', 'Ocurrio un error al registrar, por favor contacta al administrador', 'error');</script>";
 			}
 			}else{
-				echo "<script>swal('Error', 'Ya existe un producto registrado con ese codigo o ocurrio un error al conectarse con la base de datos', 'error');</script>";
+				echo "<script>swal('Error', 'Por favor, ingresa otro codigo de producto', 'error');</script>";
 			}
 		}
 	}
@@ -806,7 +806,7 @@ class MVC{
         echo "<script>swal('Exito!','Usuario registrado','success');
         window.location='index.php?action=usuarios';</script>";
 			}else{
-				echo "<script>swal('Error','Ya existe un usuario registrado con ese username o ocurrio un error al conectarse con la base de datos','error');</script>";
+				echo "<script>swal('Error','Por favor, ingresa otro username','error');</script>";
 			}
 		}
 	}
@@ -827,7 +827,7 @@ class MVC{
         echo "<script>swal('Exito!','Tienda registrada','success');
         window.location='index.php?action=tiendas';</script>";
 			}else{
-			echo "<script>swal('Error', 'Ya existe una tienda registrada con ese nombre o ocurrio un error al conectarse con la base de datos', 'error');</script>";
+			echo "<script>swal('Error', 'Por favor, ingresa otro nombre de tienda', 'error');</script>";
 			}
 		}
 	}
@@ -915,7 +915,7 @@ class MVC{
 				<div class='form-group'>
                     <p>
                     <label>Codigo</label>
-                    <input type='text' class='form-control' name='codigo' value='".$peticion['codigo']."' placeholder='Ingresa el codigo del producto' required=''>
+                    <input type='text' class='form-control' name='codigo' value='".$peticion['codigo']."' placeholder='Ingresa el codigo del producto' required='' readonly='true'>
                   </p>
                   </div>
                   <div class='form-group'>
