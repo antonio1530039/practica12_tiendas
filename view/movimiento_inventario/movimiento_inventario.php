@@ -97,9 +97,9 @@
                     </div>
                     <br>
                     <div class="table-responsive">
-                    <table width="100%" id="htable" class="table table-bordered table-striped">
+                      <table id='htable' width='100%' class='table table-bordered table-striped'>
                       <thead>
-                        <th>Num</th>
+                        <th>Ref</th>
                         <th>Producto</th>
                         <th>User</th>
                         <th>Fecha</th>

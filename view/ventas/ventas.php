@@ -49,7 +49,7 @@
                     <div class="card-body p-0">
                       <br>
                     <div class="table-responsive">
-                    <table width="100%" id="example1" class="table table-bordered table-striped">
+                    <table width="100%" id="ventasTable" class="table table-bordered table-striped">
                       <thead>
                         <th>Id</th>
                         <th>Fecha</th>

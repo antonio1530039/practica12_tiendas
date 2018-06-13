@@ -62,6 +62,11 @@ class MVC{
           if($_SESSION["user_info"]["tipo_usuario"] != "1" && ($enlace == "tiendas" || $enlace == "editar_tienda" || $enlace == "registro_tienda" || $enlace == "ingresar_tienda" || $enlace == "desactivar_tienda" || $enlace == "activar_tienda")){
             $enlace = "index";//redireccionar al index
           }
+
+          //evitar que el usuario vea la pagina de login si ya inicio sesion
+          if($enlace == "login"){
+          	$enlace = "index";
+          }
         }
         
       }
@@ -110,7 +115,11 @@ class MVC{
 			      <li class='nav-item d-none d-sm-inline-block'>
 			        <a href='index.php' class='nav-link' >Home</a>
 			      </li>
-			    </ul>
+
+			      </ul>";
+			     //mostrar notificaciones
+			      $this->showNotifications();
+      echo "
 			    
 			  </nav>
 			  <!-- Main Sidebar Container -->
@@ -186,7 +195,7 @@ class MVC{
                       <li class='nav-item'>
                         <a href='index.php?action=movimiento_inventario' class='nav-link'>
                           <i class='nav-icon fa fa-exchange'></i>
-                          <p>Realizar movimiento</p>
+                          <p>Movimiento de Inventario</p>
                         </a>
                       </li>
                       <li class='nav-item'>
@@ -263,7 +272,7 @@ class MVC{
 			              <li class='nav-item'>
 			                <a href='index.php?action=movimiento_inventario' class='nav-link'>
 			                  <i class='nav-icon fa fa-exchange'></i>
-			                  <p>Realizar movimiento</p>
+			                  <p>Movimiento de Inventario</p>
 			                </a>
 			              </li>
 			              <li class='nav-item'>
@@ -315,6 +324,64 @@ class MVC{
 	}
   }
 }
+
+	//funcion que muestra las notificaciones de productos con stock <= 5
+	public function showNotifications(){
+
+		//peticion de productos con stock bajo (menor a 5)
+		$numberOfNotifications = $this->setQueryControllerGetNumber("productos", "stock", "<=", 5);
+
+
+			        $data = $this->setQueryControllerGetData("productos", "stock", "<=", 5); //obtener informacion de productos que cumplen con esa condicion
+
+			        if(!empty($data)){
+			        	echo '
+
+			      	 <!-- Right navbar links -->
+		    			<ul class="navbar-nav ml-auto">
+					        <!-- Notifications Dropdown Menu -->
+				      <li class="nav-item dropdown">
+				        <a class="nav-link" data-toggle="dropdown" href="#">
+				          <i class="fa fa-bell-o">--</i>
+				          <span class="badge badge-danger navbar-badge">'.$numberOfNotifications.'</span>
+				        </a>
+				        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+				          <span class="dropdown-item dropdown-header"> ('.$numberOfNotifications.') Productos con stock bajo</span>
+				        ';
+				        //por cada producto con stock bajo, imprimirlo en la tabla de notificaciones
+			        	foreach ($data as $row => $item) {
+						echo '
+							<div class="dropdown-divider"></div>
+			          <a href="index.php?action=movimiento_inventario" class="dropdown-item">
+			            <i class="fa nav-icon fa fa-cube"></i> '.$item["nombre"].' | Stock: '.$item["stock"].'
+			            <span class="float-right text-muted text-sm"></span>
+			          </a>
+						';
+						}
+
+			        }else{
+			        	echo '
+
+			      	 <!-- Right navbar links -->
+		    			<ul class="navbar-nav ml-auto">
+					        <!-- Notifications Dropdown Menu -->
+				      <li class="nav-item dropdown">
+				        <a class="nav-link" data-toggle="dropdown" href="#">
+				          <i class="fa fa-bell-o"></i>
+				        </a>
+				        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+				          <span class="dropdown-item dropdown-header">No tienes notificaciones</span>
+				        ';
+
+			        }
+
+
+					echo '
+
+
+			      </li>
+			      </ul>';
+	}
 
   	//funcion encargada de ingresar los valores del login e iniciar sesion
 	public function ingresoUsuarioController(){
@@ -486,7 +553,7 @@ class MVC{
 					echo "<td>".$item['fecha']."</td>";
 					echo "<td>".$usuario['user']."</td>";
 					echo "<td>".$tienda['nombre']."</td>";
-					echo "<td>".$item['total']."</td>";
+					echo "<td style='color:green'><strong>$ ".$item['total']."</strong></td>";
 	          		echo "<td>"."<a class='btn btn-secondary fa fa-file-text-o' href=index.php?action=detalle_venta&id=".$item['id']."></a></td>";
 	          		 echo "<td>"."<a class='btn btn-danger fa fa-trash' id='borrar_btn".$item["id"]."' onclick='b(".$item["id"].");' href='index.php?action=borrar&tipo=ventas&id=".$item['id']."'></a></td>";  
 	        echo "</tr>";
@@ -608,7 +675,7 @@ class MVC{
 						echo "<option value='".$c."'>".$item['codigo']. " | ".$item['nombre'] ." | " . $item['stock'] . "</option>";
 						$c++;
 					}else{
-						echo "<option value='".$item['id']."'>".$item['codigo']. " | ".$item['nombre'] ." | " . $item['stock'] . "</option>";
+						echo "<option value='".$item['id']."'>".$item['codigo']. " | ".$item['nombre'] ." | Stock: " . $item['stock'] . "</option>";
 				
 					}
 				}
@@ -637,12 +704,34 @@ class MVC{
 			//peticion al modelo del reigstro del producto mandando como param la informacion de este
 			$registro = Crud::registroProductoModel($data);
 			if($registro == "success"){ //verificar la respuesta del modelo
+				//obtener indice del producto registrado
+				$id_prod = Crud::getLastIndexInX("productos",$_SESSION['tienda']);
+
+
+				//registrar el stock del producto agregado
+				//crear array con los datos a registrar tomados de los controles
+			$data_historia = array('id_producto'=>$id_prod[0],
+						'cantidad'=> $_POST['stock'],
+						'id_usuario'=> $_SESSION['user_info']['id'],
+						'fecha'=> date("Y-m-d"),
+						'tipo'=> "Stock inicial",
+						'serie'=> "Alta",
+						'tiendas_id'=> $_SESSION['tienda']
+					);
+			//registrar en historial stock con el que inicio
+			$last = Crud::registroHistorialModel($data_historia);
+
+			if($last == "success" )
+			{
 				echo "<script>
         swal('Exito!', 'Producto registrado', 'success');
         window.location='index.php?action=productos';
         </script>";
 			}else{
-				echo "<script>swal('Error', 'Ocurrio un error al registrar', 'error');</script>";
+				echo "<script>swal('Error', 'Ocurrio un error al registrar, por favor contacta al administrador', 'error');</script>";
+			}
+			}else{
+				echo "<script>swal('Error', 'Ya existe un producto registrado con ese codigo o ocurrio un error al conectarse con la base de datos', 'error');</script>";
 			}
 		}
 	}
@@ -717,7 +806,7 @@ class MVC{
         echo "<script>swal('Exito!','Usuario registrado','success');
         window.location='index.php?action=usuarios';</script>";
 			}else{
-				echo "<script>swal('Error','Ocurrió un error al registrar','error');</script>";
+				echo "<script>swal('Error','Ya existe un usuario registrado con ese username o ocurrio un error al conectarse con la base de datos','error');</script>";
 			}
 		}
 	}
@@ -738,7 +827,7 @@ class MVC{
         echo "<script>swal('Exito!','Tienda registrada','success');
         window.location='index.php?action=tiendas';</script>";
 			}else{
-				echo "<script>swal('Error','Ocurrió un error al registrar','error');</script>";
+			echo "<script>swal('Error', 'Ya existe una tienda registrada con ese nombre o ocurrio un error al conectarse con la base de datos', 'error');</script>";
 			}
 		}
 	}
@@ -759,7 +848,7 @@ class MVC{
 			if($registro == "success"){ //verificar la respuesta del modelo
         
 				//obtener id de la venta
-				$venta = Crud::getLastVenta($_SESSION['tienda']);
+				$venta = Crud::getLastIndexInX("ventas",$_SESSION['tienda']);
 				//print_r($venta);
 
 				//iterar por cada producto y asi insertar en la tabla ventasproductos
@@ -771,6 +860,20 @@ class MVC{
 				'cantidad'=> $_POST['cantidad'.$iter]
 					);
 					Crud::registroProductoEnVentaModel($data2); //registrar en el modelo
+
+					//crear array con los datos a registrar tomados de los controles
+			$data_historia = array('id_producto'=> $_POST['id'.$iter],
+						'cantidad'=> $_POST['cantidad'.$iter],
+						'id_usuario'=> $_SESSION['user_info']['id'],
+						'fecha'=> date("Y-m-d"),
+						'tipo'=> "Vendido",
+						'serie'=> "Venta",
+						'tiendas_id'=> $_SESSION['tienda']
+					);
+			//registrar en historial
+			Crud::registroHistorialModel($data_historia);
+
+
 		        $iter++;
 				}
 
@@ -821,12 +924,6 @@ class MVC{
                     <input type='text' class='form-control' name='nombre' value='".$peticion['nombre']."' placeholder='Ingresa el nombre del producto' required=''>
                   </p>
                   </div>
-                  <div class='form-group'>
-                    <p>
-                    <label>Descripcion</label>
-                    <input type='text' class='form-control' name='descripcion' value='".$peticion['descripcion']."'  placeholder='Ingresa la descripcion del producto' required=''>
-                  </p>
-                  </div>
                   </div>
                   </div>
                   </div>
@@ -835,6 +932,12 @@ class MVC{
               <!-- /.card-header -->
               <!-- form start -->
                 <div class='card-body login-card-body'>
+                                  <div class='form-group'>
+                    <p>
+                    <label>Descripcion</label>
+                    <input type='text' class='form-control' name='descripcion' value='".$peticion['descripcion']."'  placeholder='Ingresa la descripcion del producto' required=''>
+                  </p>
+                  </div>
                   <div class='form-group'>
                     <p>
                     <label>Categoria</label>
@@ -854,19 +957,7 @@ class MVC{
                         <span class='input-group-text'></span>
                       </div>
                     </div>
-                  </div>
-                  <div class='form-group'>
-                    <label>Stock</label>
-                        <div class='input-group'>
-                      <div class='input-group-prepend'>
-                        <span class='input-group-text'>Unidades</span>
-                      </div>
-                      <input type='number' step='1' value='".$peticion['stock']."' class='form-control' name='stock' required=''>
-                      <div class='input-group-append'>
-                        <span class='input-group-text'></span>
-                      </div>
-                    </div>
-                  </div>
+                  </div><br>
                 <button type='submit' name='btn_actualizar' id='targ'  class='btn btn-success' onclick='c();' style='float:right;'>Guardar cambios</button>
                   </div>
                   ";
@@ -931,12 +1022,12 @@ class MVC{
 					<div class="form-group">
                     <div class="card">
                       <div class="card-header">
-                        <h3 class="card-title">Informacion de venta '.$id .' - Total: $'. $venta['total']. '</h3>
+                        <h3 class="card-title">Informacion de venta <strong>'.$id .'</strong> : <strong> Total: $'. $venta['total']. '</strong></h3>
                       </div>
                     <div class="card-body p-0">
                       <br>
                     <div class="table-responsive">
-                    <table width="100%" id="" class="table table-bordered table-striped">
+                    <table width="100%" id="example1" class="table table-bordered table-striped">
                       <thead>
                         <th>Id de venta</th>
                         <th>Producto</th>
@@ -950,7 +1041,7 @@ class MVC{
 			          $producto = Crud::getRegModel($item['id_producto'], "productos", $_SESSION['tienda']);
 			          echo "<td>".$producto['nombre']."</td>";
 			          echo "<td>".$item['cantidad']."</td>";
-			          echo "<td>".$item['subtotal']."</td>";
+			          echo "<td style='color:green'><strong>$ ".$item['subtotal']."</strong></td>";
 			            echo "</tr>";
 
 			        }
@@ -1008,7 +1099,6 @@ class MVC{
 				"nombre"=>$_POST['nombre'],
 				"descripcion"=>$_POST['descripcion'],
 				"precio_unitario"=>$_POST['precio'],
-				"stock"=>$_POST['stock'],
 				"categoria"=>$_POST['categoria'],
 				"tiendas_id"=>$_SESSION['tienda']
 			);
@@ -1100,7 +1190,7 @@ class MVC{
 	}
 
 
-	//funcion setQueryControllerGetNumber, dado un nombre de tabla, un titulo, un campo, un operador y un valor, se ejecuta un metodo de la clase modelo (Crud) el cual, pasando como parametro los valores mencionados, obtiene los registos que cumplan con estas coincidencias en la tabla seleccionada y retorna el numero de registros de la coincidencia
+	//funcion setQueryControllerGetNumber, dado un nombre de tabla, un campo, un operador y un valor, se ejecuta un metodo de la clase modelo (Crud) el cual, pasando como parametro los valores mencionados, obtiene los registos que cumplan con estas coincidencias en la tabla seleccionada y retorna el numero de registros de la coincidencia
 	function setQueryControllerGetNumber($table, $field, $operator, $equals){
 		$peticion = Crud::getQueryFromX($table, $field, $operator,$equals, $_SESSION['tienda']); //peticion al modelo
 		//se imprime la tabla con informacion
@@ -1108,6 +1198,16 @@ class MVC{
 			return count($peticion);
 		}else{
 			return 0;
+		}
+	}
+
+	//funcion setQueryControllerGetData, dado un nombre de tabla, un campo, un operador y un valor, se ejecuta un metodo de la clase modelo (Crud) el cual, pasando como parametro los valores mencionados, obtiene los registos que cumplan con estas coincidencias en la tabla seleccionada y retorna los datos de esta
+	function setQueryControllerGetData($table, $field, $operator, $equals){
+		$peticion = Crud::getQueryFromX($table, $field, $operator,$equals, $_SESSION['tienda']); //peticion al modelo
+		if(!empty($peticion)){ //se verifica que la variable peticion no este vacia
+			return $peticion;
+		}else{
+			return "";
 		}
 	}
 
@@ -1123,9 +1223,9 @@ class MVC{
                       </div>
                     <div class='card'>";
                     if($table=="productos"){
-                    	echo "<br><div class='table-responsive'><table id='example1' width='100%' class='table table-bordered table-striped'>";
+                    	echo "<br><div class='table-responsive'><table id='htable2' width='100%' class='table table-bordered table-striped'>";
                     }else{
-                    	echo "<br><div class='table-responsive'><table id='example2' width='100%' class='table table-bordered table-striped'>";
+                    	echo "<br><div class='table-responsive'><table id='htable' width='100%' class='table table-bordered table-striped'>";
                     }
 		
 			echo "<thead>";

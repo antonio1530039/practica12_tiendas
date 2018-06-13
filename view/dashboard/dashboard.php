@@ -51,6 +51,7 @@
               <div class="icon">
                 <i class="ion ion-bag"></i>
               </div>
+              <a href="index.php?action=movimiento_inventario" class="small-box-footer">Ir a Movimientos de Inventario <i class="fa fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -64,6 +65,7 @@
               <div class="icon">
                 <i class="ion ion-stats-bars"></i>
               </div>
+              <a href="index.php?action=productos" class="small-box-footer">Ir a Gestión de Productos <i class="fa fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -77,6 +79,7 @@
               <div class="icon">
                 <i class="ion ion-person-add"></i>
               </div>
+          <a href="index.php?action=usuarios" class="small-box-footer">Ir a Gestión de Usuarios <i class="fa fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -85,12 +88,12 @@
             <div class="small-box bg-info">
               <div class="inner">
                 <h3><?php echo $controller_dashboard->setQueryControllerGetNumber("categorias", "deleted", "=",0); ?></h3>
-
                 <p>Categorías registradas</p>
               </div>
               <div class="icon">
                 <i class="ion ion-pie-graph"></i>
               </div>
+              <a href="index.php?action=categorias" class="small-box-footer">Ir a Gestión de Categorias <i class="fa fa-arrow-circle-right"></i></a>
              </div>
           </div>
           <!-- ./col -->

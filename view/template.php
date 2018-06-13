@@ -238,20 +238,31 @@
 
 
 
-  //crear datable para Historial y ordenar por fecha
-  /*
+  //crear datable para Historial
+
     $(document).ready(function() {
-    $('#htable').DataTable( {
-        "order": [[ 3, "desc" ]]
-    } );
-} );*/
+    $('#htable').DataTable({
+      "bSort": false
+});
+     $('#htable2').DataTable({
+      "bSort": false
+});
+} );
 
 
-      //necesario para mostrar dataTables
+     $(document).ready(function() {
+    $('#ventasTable').DataTable({
+     "order": [[ 0, "desc" ]]
+});
+} );
+
+      //funciones para cargar algunos datatables y el select2
           $(function () {
             $('.select2').select2();
             $("#example1").DataTable();
             $("#example2").DataTable();
+            $("#tiendas_desactivadas").DataTable();
+            
           });
       </script> 
 

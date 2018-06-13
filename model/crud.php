@@ -23,7 +23,6 @@ class Crud extends Conexion{
 				$stmt = Conexion::conectar()->prepare("SELECT * FROM $table WHERE deleted=0 and active=0"); //preparacion de la consulta SQL
 			 }else{
 				$stmt = Conexion::conectar()->prepare("SELECT * FROM $table WHERE deleted=0 and active=1"); //preparacion de la consulta SQL 
-			
 			}
 	}else if($table == "transaccion"){
       		$stmt = Conexion::conectar()->prepare("SELECT * FROM $table WHERE deleted=0 and tiendas_id = :tiendas_id ORDER BY id DESC"); //preparacion de la consulta SQL 
@@ -75,14 +74,9 @@ class Crud extends Conexion{
 	//metodo registroHistorialModel: dado un arreglo asociativo de datos, se inserta en la tabla productos los datos especificados
 	public function registroHistorialModel($data){
 		//id	id_producto	id_usuario	cantidad	tipo	fecha	deleted
-		//verificar si existe stock
-		$stmt = Conexion::conectar()->prepare("SELECT stock - :cant FROM productos WHERE id = :id_producto and tiendas_id = :tiendas_id");
-		$stmt->bindParam(":cant", $data['cantidad']);
-		$stmt->bindParam(":id_producto", $data['id_producto']); //colocar parametros
-		$stmt->bindParam(":tiendas_id", $data['tiendas_id']); //colocar parametros
-		$stmt->execute();
-		$result = $stmt->fetchAll();
-		if($result[0][0] >= 0 || $data['tipo'] == "Entrada"){
+		//verificar si existe stock´
+
+		if($data["tipo"]=="Vendido" || $data["tipo"]=="Stock inicial" ){
 			$stmt = Conexion::conectar()->prepare("INSERT INTO transaccion(id_producto, id_usuario, cantidad, tipo, fecha, serie, tiendas_id) VALUES(:id_producto, :id_usuario, :cantidad, :tipo, :fecha, :serie, :tiendas_id)");
 			//preparacion de parametros
 			$stmt->bindParam(":id_producto", $data['id_producto']);
@@ -92,29 +86,57 @@ class Crud extends Conexion{
 			$stmt->bindParam(":fecha", $data['fecha']);
 			$stmt->bindParam(":serie", $data['serie']);
 			$stmt->bindParam(":tiendas_id", $data['tiendas_id']);
-			
-			if($stmt->execute()) {//ejecucion
-				//actualizar el producto segun la cantidad ingresada
-				if($data['tipo']=="Entrada"){
-					$stmt = Conexion::conectar()->prepare("UPDATE productos SET stock = stock + :cantidad WHERE id = :id_producto and tiendas_id = :tiendas_id"); //preparar la consulta
-				}else{
-					$stmt = Conexion::conectar()->prepare("UPDATE productos SET stock = stock - :cantidad WHERE id = :id_producto and tiendas_id = :tiendas_id"); //preparar la consulta
+			if($stmt->execute())
+				return "success";
+			else
+				return "erorr";
+		}else{
+
+			$stmt = Conexion::conectar()->prepare("SELECT stock - :cant FROM productos WHERE id = :id_producto and tiendas_id = :tiendas_id");
+			$stmt->bindParam(":cant", $data['cantidad']);
+			$stmt->bindParam(":id_producto", $data['id_producto']); //colocar parametros
+			$stmt->bindParam(":tiendas_id", $data['tiendas_id']); //colocar parametros
+			$stmt->execute();
+			$result = $stmt->fetchAll();
+
+
+			if($result[0][0] >= 0 || $data['tipo'] == "Entrada"){
+				$stmt = Conexion::conectar()->prepare("INSERT INTO transaccion(id_producto, id_usuario, cantidad, tipo, fecha, serie, tiendas_id) VALUES(:id_producto, :id_usuario, :cantidad, :tipo, :fecha, :serie, :tiendas_id)");
+				//preparacion de parametros
+				$stmt->bindParam(":id_producto", $data['id_producto']);
+				$stmt->bindParam(":id_usuario", $data['id_usuario']);
+				$stmt->bindParam(":cantidad", $data['cantidad']);
+				$stmt->bindParam(":tipo", $data['tipo']);
+				$stmt->bindParam(":fecha", $data['fecha']);
+				$stmt->bindParam(":serie", $data['serie']);
+				$stmt->bindParam(":tiendas_id", $data['tiendas_id']);
+				
+				if($stmt->execute()) {//ejecucion
+					//actualizar el producto segun la cantidad ingresada
+					if($data['tipo']=="Entrada"){
+						$stmt = Conexion::conectar()->prepare("UPDATE productos SET stock = stock + :cantidad WHERE id = :id_producto and tiendas_id = :tiendas_id"); //preparar la consulta
+					}else if($data["tipo"]=="Salida"){
+						$stmt = Conexion::conectar()->prepare("UPDATE productos SET stock = stock - :cantidad WHERE id = :id_producto and tiendas_id = :tiendas_id"); //preparar la consulta
+					}
+					$stmt->bindParam(":id_producto", $data['id_producto']); //colocar parametros
+					$stmt->bindParam(":cantidad", $data['cantidad']); //colocar parametros
+					$stmt->bindParam(":tiendas_id", $data['tiendas_id']); //colocar parametros
+					if($stmt->execute()){ //ejecutar la consulta
+						return "success"; //respuesta final
+					}else{
+						return "error";
+					}
 				}
-				$stmt->bindParam(":id_producto", $data['id_producto']); //colocar parametros
-				$stmt->bindParam(":cantidad", $data['cantidad']); //colocar parametros
-				$stmt->bindParam(":tiendas_id", $data['tiendas_id']); //colocar parametros
-				if($stmt->execute()){ //ejecutar la consulta
-					return "success"; //respuesta final
-				}else{
+				else{
 					return "error";
 				}
+			}else{
+				return "nostock";
 			}
-			else{
-				return "error";
-			}
-		}else{
-			return "nostock";
+
 		}
+
+		
 		$stmt->close();
 	}
 
@@ -241,9 +263,9 @@ class Crud extends Conexion{
 
 
 	//metodo getLastVenta: retorna la ultima venta registrada
-	public function getLastVenta($tiendas_id){
+	public function getLastIndexInX($table, $tiendas_id){
     	//se prepara la consulta sql
-		$stmt = Conexion::conectar()->prepare("SELECT MAX(id) FROM ventas WHERE deleted = 0 and tiendas_id = :tiendas_id");
+		$stmt = Conexion::conectar()->prepare("SELECT MAX(id) FROM $table WHERE deleted = 0 and tiendas_id = :tiendas_id");
 		$stmt->bindParam(":tiendas_id",$tiendas_id); //se asocia el parametro 
 		$stmt->execute(); //se ejecuta la consulta
 		return $stmt->fetch(); //se retorna el resultado de la consulta
@@ -253,12 +275,11 @@ class Crud extends Conexion{
 
 	//metodo actualizarProductoModel: dado un array de datos y un id de un producto, se actualizan los datos de este con los datos mandados
 	public function actualizarProductoModel($data, $id){
-		$stmt = Conexion::conectar()->prepare("UPDATE productos SET codigo=:codigo, nombre = :nombre, id_categoria=:categoria,  descripcion = :descripcion, precio_unitario = :precio_unitario, stock = :stock WHERE id = $id and tiendas_id = :tiendas_id");
+		$stmt = Conexion::conectar()->prepare("UPDATE productos SET codigo=:codigo, nombre = :nombre, id_categoria=:categoria,  descripcion = :descripcion, precio_unitario = :precio_unitario WHERE id = $id and tiendas_id = :tiendas_id");
 		$stmt->bindParam(":nombre", $data['nombre']);
 		$stmt->bindParam(":codigo", $data['codigo']);
 		$stmt->bindParam(":descripcion", $data['descripcion']);
 		$stmt->bindParam(":precio_unitario", $data['precio_unitario']);
-		$stmt->bindParam(":stock", $data['stock']);
 		$stmt->bindParam(":categoria", $data['categoria']);
 		$stmt->bindParam(":tiendas_id", $data['tiendas_id']);
 		if($stmt->execute())

@@ -44,10 +44,10 @@
                   <div class="form-group">
                     <div class="card">
                       <div class="card-header">
-                        <h3 class="card-title">Listado de tiendas activadas</h3>
+                        <h3 class="card-title">Listado de tiendas activadas <a href="#tiendas_desactivadas" class="btn btn-warning fa fa-circle-o" style="float:right;color:black"> Ver tiendas desactivadas</a></h3>
                       </div>
-                    <div class="card-body p-0">
-                      <br>
+
+                    <div class="card-body p-0"><br>
                     <div class="table-responsive">
                     <table width="100%" id="example1" class="table table-bordered table-striped">
                       <thead>
@@ -86,7 +86,7 @@
                     <div class="card-body p-0">
                       <br>
                     <div class="table-responsive">
-                    <table width="100%" id="example2" class="table table-bordered table-striped">
+                    <table width="100%" id="tiendas_desactivadas" class="table table-bordered table-striped">
                       <thead>
                         <th>Id</th>
                         <th>Nombre</th>
