@@ -579,7 +579,6 @@ class MVC{
 					echo "<td>".$item['nombre']."</td>";
 					echo "<td>".$item['direccion']."</td>";
 					echo "<td>".$item['fecha_registro']."</td>";
-	          		echo "<td>"."<a class='btn btn-secondary fa fa-edit' href=index.php?action=editar_tienda&id=".$item['id']."></a></td>";
           //mandar por propiedad onclick el id del elemento tag a para eleminarlo
 	          		echo "<td>"."<a class='btn btn-warning fa  fa-circle' id='activar".$item["id"]."' onclick='a(".$item["id"].");' href='index.php?action=activar_tienda&id=".$item['id']."'></a></td>";  
 
@@ -1018,16 +1017,17 @@ class MVC{
 			$peticion = Crud::getProductosVentasModel($id); //peticion al modelo del registro especificado por el id
 		$venta = Crud::getRegModel($id, "ventas", $_SESSION['tienda']);
 		if(!empty($peticion)){
+			$usuario = Crud::getRegModel($peticionVenta['id_usuario'] , "usuarios", $_SESSION['tienda']);
 			echo '
 					<div class="form-group">
                     <div class="card">
                       <div class="card-header">
-                        <h3 class="card-title">Informacion de venta <strong>'.$id .'</strong> : <strong> Total: $'. $venta['total']. '</strong></h3>
+                        <h3 class="card-title">Informacion de venta <strong>'.$id .'</strong> : <strong> Total: $'. $venta['total']. '</strong> - Usuario: '.$usuario['user'] .'</h3>
                       </div>
                     <div class="card-body p-0">
                       <br>
                     <div class="table-responsive">
-                    <table width="100%" id="example1" class="table table-bordered table-striped">
+                    <table width="100%" id="detalleVenta" class="table table-bordered table-striped">
                       <thead>
                         <th>Id de venta</th>
                         <th>Producto</th>
@@ -1083,6 +1083,8 @@ class MVC{
                     <input type='text' class='form-control' name='direccion' value='".$peticion["direccion"]."' placeholder='Ingresa la direccion de la tienda' required=''>
                   </div>
                   ";
+		}else{
+			echo "<script>window.location='index.php?action=tiendas';</script>";
 		}
 	}
 
@@ -1231,7 +1233,7 @@ class MVC{
 			echo "<thead>";
 				echo "<tr>";
 					if($table=="transaccion"){
-						echo "<th>Productos</th>";
+						echo "<th>Producto</th>";
 						echo "<th>Cantidad</th>";
 						echo "<th>Tipo de transaccion</th>";
 						echo "<th>Fecha</th>";

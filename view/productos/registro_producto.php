@@ -104,7 +104,7 @@
                       <div class="input-group-prepend">
                         <span class="input-group-text">Unidades</span>
                       </div>
-                      <input type="number" step="1"  class="form-control" name="stock" required="">
+                      <input type="number" step="1" id="stockk"  class="form-control" name="stock" required="">
                       <div class="input-group-append">
                         <span class="input-group-text"></span>
                       </div>
@@ -112,7 +112,7 @@
                   </div>
                   <br>
                   
-                   <input type="submit" name="btn_agregar" value="Registrar" class="btn btn-success" style="float: right;">
+                   <input type="submit" name="btn_agregar" value="Registrar" class="btn btn-success" onclick="veri();" style="float: right;">
             
                
             </div>   
@@ -127,7 +127,17 @@
 </div>
   </form>
 </div>
-</section>
+</section> 
+<script type="text/javascript">
+  //funcion que verifica si el stock es mayor a 0
+  function veri(){
+    if(document.getElementById("stockk").value < 0){
+      event.preventDefault();
+      swal("Stock invalido", "Ingresa un numero mayor o igual a 0 en el campo stock.", "warning");
+    }
+  }
+
+</script>
   </body>
 
   </html>

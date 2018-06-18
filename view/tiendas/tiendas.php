@@ -92,7 +92,6 @@
                         <th>Nombre</th>
                         <th>Direccion</th>
                         <th>Fecha de registro</th>
-                        <th>Editar</th>
                         <th>Activar</th>
                         <th>Eliminar</th>
                       </thead>

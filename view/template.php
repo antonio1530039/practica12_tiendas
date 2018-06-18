@@ -28,6 +28,8 @@
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
   <!-- DataTables -->
   <link rel="stylesheet" href="view/plugins/datatables/dataTables.bootstrap4.css">
+
+
     <!-- Select2 -->
   <link rel="stylesheet" href="view/plugins/select2/select2.min.css">
   <link rel="stylesheet" href="view/plugins/bootstrap/css/bootstrap.min.css">
@@ -70,6 +72,19 @@
 <!-- DataTables -->
 <script src="view/plugins/datatables/jquery.dataTables.js"></script>
 <script src="view/plugins/datatables/dataTables.bootstrap4.js"></script>
+<script src="view/plugins/datatables/dataTables.min.js"></script>
+<script src="view/plugins/datatables/dataTables.buttons.min.js"></script>
+<script src="view/plugins/datatables/buttons.flash.min.js"></script>
+<script src="view/plugins/datatables/jszip.min.js"></script>
+<script src="view/plugins/datatables/pdfmake.min.js"></script>
+<script src="view/plugins/datatables/vfs_fonts.js"></script>
+<script src="view/plugins/datatables/buttons.html5.min.js"></script>
+<script src="view/plugins/datatables/buttons.print.min.js"></script>
+
+
+
+
+
 <!-- daterangepicker -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js"></script>
 <script src="view/plugins/daterangepicker/daterangepicker.js"></script>
@@ -252,7 +267,20 @@
 
      $(document).ready(function() {
     $('#ventasTable').DataTable({
-     "order": [[ 0, "desc" ]]
+     "order": [[ 0, "desc" ]],
+     dom: 'Bfrtip',
+      buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ]
+});
+} );
+
+     $(document).ready(function() {
+    $('#detalleVenta').DataTable({
+     dom: 'Bfrtip',
+      buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ]
 });
 } );
 

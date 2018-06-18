@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 13-06-2018 a las 11:47:01
+-- Tiempo de generación: 18-06-2018 a las 08:17:55
 -- Versión del servidor: 10.1.26-MariaDB
 -- Versión de PHP: 7.1.9
 
@@ -73,10 +73,10 @@ CREATE TABLE `productos` (
 --
 
 INSERT INTO `productos` (`id`, `codigo`, `nombre`, `descripcion`, `precio_unitario`, `stock`, `id_categoria`, `fecha_registro`, `deleted`, `tiendas_id`) VALUES
-(7, 'Cod01', 'Galletas Lors - Extra Queso', 'Galletas de maiz', '11.50', 150, 2, '2018-06-09', 0, 2),
+(7, 'Cod01', 'Galletas Lors - Extra Queso', 'Galletas de maiz', '11.50', 144, 2, '2018-06-09', 0, 2),
 (8, 'p02', 'Coca cola 600 ml', 'Refresco de cola', '15.00', 80, 3, '2018-06-09', 0, 2),
-(9, 'p21', 'Yogurth', 'Nestle', '52.00', 5, 20, '2018-06-09', 0, 2),
-(10, 'pd01', 'Galletas Lors', 'z', '22.00', 0, 2, '2018-06-09', 0, 2),
+(9, 'p21', 'Yogurth', 'Nestle', '52.00', 0, 20, '2018-06-09', 0, 2),
+(10, 'pd01', 'Galletas Lors', 'z', '22.00', 10, 2, '2018-06-09', 0, 2),
 (11, '3232', 'Product', 'wqeqe', '22.00', 0, 2, '2018-06-09', 0, 2),
 (12, '435', 'Product2', '22222', '222.00', 2222, 2, '2018-06-09', 1, 2),
 (13, 'pruebaProd', 'Martillo', 'Martillo de fierro', '250.00', 100, 2, '2018-06-09', 1, 2),
@@ -86,7 +86,10 @@ INSERT INTO `productos` (`id`, `codigo`, `nombre`, `descripcion`, `precio_unitar
 (17, '981', 'Mermelada', 'de medusa', '90.00', 100, 20, '2018-06-13', 0, 2),
 (18, 'lo07151', 'Monitor HP', 'HP', '5000.00', 100, 2, '2018-06-13', 0, 2),
 (19, 'lkjhg', 'Celular Samsung S6', 'Cel', '10000.00', 10, 22, '2018-06-13', 0, 2),
-(20, '01827-7', 'Disco duro ADATA', 'disco duro adata edit', '1500.00', 77, 2, '2018-06-13', 0, 2);
+(20, '01827-7', 'Disco duro ADATA', 'disco duro adata edit', '1500.00', 77, 2, '2018-06-13', 0, 2),
+(21, '123718', 'nmxsnc', 'nmdbcm', '213.00', -2, 2, '2018-06-14', 1, 2),
+(22, '111', '11', '11', '1.00', 103, 2, '2018-06-14', 0, 2),
+(23, '222', '222', '222', '2.00', 100, 2, '2018-06-14', 0, 2);
 
 -- --------------------------------------------------------
 
@@ -110,10 +113,10 @@ CREATE TABLE `tiendas` (
 INSERT INTO `tiendas` (`id`, `nombre`, `direccion`, `fecha_registro`, `active`, `deleted`) VALUES
 (1, 'Sucursal Root', 'Col centro', '2018-06-05', 1, 0),
 (2, 'GranD', 'Col. Centro Cd Victoria', '2018-06-04', 1, 0),
-(3, 'Walmart', 'Cd. Victoria', '2018-06-03', 1, 0),
-(9, 'TiendaMainero', 'Col mainero', '2018-06-01', 1, 0),
-(10, 'Waldos', '16 Guerrero', '2018-06-11', 0, 0),
-(11, 'TIendadeMemo', 'sample', '2018-06-13', 1, 0);
+(3, 'Walmart', 'Cd. Victoria', '2018-06-03', 1, 1),
+(9, 'TiendaMainero', 'Col mainero', '2018-06-01', 1, 1),
+(10, 'Waldos', '16 Guerrero', '2018-06-11', 0, 1),
+(11, 'TIendadeMemo', 'sample', '2018-06-13', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -165,7 +168,14 @@ INSERT INTO `transaccion` (`id`, `id_producto`, `id_usuario`, `cantidad`, `tipo`
 (35, 9, 1, 5, 'Vendido', '2018-06-13', 'Venta', 0, 2),
 (37, 20, 1, 80, 'Stock inicial', '2018-06-13', 'Alta', 0, 2),
 (38, 20, 1, 3, 'Vendido', '2018-06-13', 'Venta', 0, 2),
-(39, 11, 1, 5, 'Vendido', '2018-06-13', 'Venta', 0, 2);
+(39, 11, 1, 5, 'Vendido', '2018-06-13', 'Venta', 0, 2),
+(40, 10, 1, 10, 'Entrada', '2018-06-13', '123', 0, 2),
+(42, 22, 2, 3, 'Stock inicial', '2018-06-14', 'Alta', 0, 2),
+(43, 23, 2, 0, 'Stock inicial', '2018-06-14', 'Alta', 0, 2),
+(44, 22, 2, 100, 'Entrada', '2018-06-14', '1010', 0, 2),
+(45, 23, 13, 100, 'Entrada', '2018-06-16', '010101', 0, 2),
+(46, 7, 13, 6, 'Vendido', '2018-06-16', 'Venta', 0, 2),
+(47, 9, 13, 5, 'Vendido', '2018-06-16', 'Venta', 0, 2);
 
 -- --------------------------------------------------------
 
@@ -176,7 +186,7 @@ INSERT INTO `transaccion` (`id`, `id_producto`, `id_usuario`, `cantidad`, `tipo`
 CREATE TABLE `usuarios` (
   `id` int(11) NOT NULL,
   `user` varchar(50) NOT NULL,
-  `password` varchar(100) NOT NULL,
+  `password` varchar(255) NOT NULL,
   `fecha_registro` date NOT NULL,
   `tipo_usuario` int(11) DEFAULT '0',
   `deleted` int(11) NOT NULL DEFAULT '0',
@@ -190,8 +200,11 @@ CREATE TABLE `usuarios` (
 INSERT INTO `usuarios` (`id`, `user`, `password`, `fecha_registro`, `tipo_usuario`, `deleted`, `tiendas_id`) VALUES
 (1, 'mario', 'mario', '2018-06-07', 1, 0, 1),
 (2, 'jose', 'jose', '2018-06-07', 0, 0, 2),
-(10, 'qwerty2', 'qwerty2x', '2018-06-09', 0, 1, 2),
-(11, 'hitler', 'hitler', '2018-06-11', 0, 0, 2);
+(10, 'qwerty2', 'qwerty', '2018-06-09', 0, 1, 2),
+(11, 'hitler', 'hitler', '2018-06-11', 0, 0, 2),
+(12, 'osiel', 'osiel', '2018-06-16', 0, 0, 2),
+(13, 'yuri', 'yuri2', '2018-06-16', 0, 0, 2),
+(14, 'mariana', 'mariana2', '2018-06-17', 0, 0, 2);
 
 -- --------------------------------------------------------
 
@@ -224,7 +237,8 @@ INSERT INTO `ventas` (`id`, `fecha`, `id_usuario`, `tiendas_id`, `total`, `delet
 (35, '2018-06-13', 1, 2, '725.00', 0),
 (36, '2018-06-13', 1, 9, '1400.00', 0),
 (37, '2018-06-13', 1, 2, '410.00', 0),
-(38, '2018-06-13', 1, 2, '3710.00', 0);
+(38, '2018-06-13', 1, 2, '3710.00', 0),
+(39, '2018-06-16', 13, 2, '329.00', 0);
 
 -- --------------------------------------------------------
 
@@ -266,7 +280,9 @@ INSERT INTO `ventas_productos` (`id`, `id_producto`, `id_venta`, `cantidad`, `su
 (27, 8, 37, 10, '150.00', 0),
 (28, 9, 37, 5, '260.00', 0),
 (29, 20, 38, 3, '3600.00', 0),
-(30, 11, 38, 5, '110.00', 0);
+(30, 11, 38, 5, '110.00', 0),
+(31, 7, 39, 6, '69.00', 0),
+(32, 9, 39, 5, '260.00', 0);
 
 --
 -- Índices para tablas volcadas
@@ -343,37 +359,37 @@ ALTER TABLE `categorias`
 -- AUTO_INCREMENT de la tabla `productos`
 --
 ALTER TABLE `productos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT de la tabla `tiendas`
 --
 ALTER TABLE `tiendas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `transaccion`
 --
 ALTER TABLE `transaccion`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT de la tabla `ventas`
 --
 ALTER TABLE `ventas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT de la tabla `ventas_productos`
 --
 ALTER TABLE `ventas_productos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- Restricciones para tablas volcadas
