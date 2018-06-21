@@ -2,7 +2,7 @@
   //instancia de la clase controlador
   $inicio_controller = new MVC();
   //metodo que verifica que el usuario haya iniciado sesion primero
-  $inicio_controller->verificarLoginController();
+ // $inicio_controller->verificarLoginController();
 ?>
 <!doctype html>
 <html class="no-js" lang="en">

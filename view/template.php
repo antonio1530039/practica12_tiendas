@@ -190,16 +190,16 @@
       
      }
 
-     //funcion que se manda llamar al tratar de DESACTIVAR alguna tienda, muestra un sweet alert pidiendo la contraseña del usuario
+     //funcion que se manda llamar al tratar de aprobar un pago, pide la cotrase;a para aprobarlo
     function d(id){
        var ps = "<?php echo $_SESSION['user_info']['password'] ?>";
         event.preventDefault();
         swal({
-          title: "Confirmar desactivación de tienda",
-          text: "<p>Ingresa tu contraseña para desactivar la tienda</p><br><input type='password' class='form-control' id='pass_sw_3' placeholder='Escribe tu contraseña aqui' autofocus><label id='err_sa_3' style='color:red'></label><br>",
+          title: "Confirmar aprobación de pago",
+          text: "<p>Ingresa tu contraseña para confirmar la acción</p><br><input type='password' class='form-control' id='pass_sw_3' placeholder='Escribe tu contraseña aqui' autofocus><label id='err_sa_3' style='color:red'></label><br>",
           html: true,
           
-          type: "warning",
+          type: "info",
           showCancelButton: true,
           cancelButtonText: "Cancelar",
           confirmButtonText: "Confirmar",
@@ -212,68 +212,18 @@
             document.getElementById("err_sa_3").innerHTML = "Contraseña incorrecta";
             return false
           }
-          var ur = document.getElementById("desactivar"+id).href;
+          var ur = document.getElementById("aprobar"+id).href;
           //alert(ur);
           window.location = ur;
-          swal("Exito!", "Tienda desactivada", "success");
+          swal("Exito!", "Pago aprobado", "success");
         });
       
      }
 
 
-     //funcion que se manda llamar al tratar de activar alguna tienda, muestra un sweet alert pidiendo la contraseña del usuario
-    function a(id){
-       var ps = "<?php echo $_SESSION['user_info']['password'] ?>";
-        event.preventDefault();
-        swal({
-          title: "Confirmar activación de tienda",
-          text: "<p>Ingresa tu contraseña para activar la tienda</p><br><input type='password' class='form-control' id='pass_sw_4' placeholder='Escribe tu contraseña aqui' autofocus><label id='err_sa_4' style='color:red'></label><br>",
-          html: true,
-          
-          type: "info",
-          showCancelButton: true,
-          cancelButtonText: "Cancelar",
-          confirmButtonText: "Confirmar",
-          closeOnConfirm: false,
-          inputPlaceholder: "Escribe tu contraseña aqui",
-        }, function () {
-          var inputValue = document.getElementById("pass_sw_4").value;
-          if (inputValue === false) return false;
-          if (inputValue != ps) {
-            document.getElementById("err_sa_4").innerHTML = "Contraseña incorrecta";
-            return false
-          }
-          var ur = document.getElementById("activar"+id).href;
-          //alert(ur);
-          window.location = ur;
-          swal("Exito!", "Tienda activada", "success");
-        });
-      
-     }
+    
 
 
-
-  //crear datable para Historial
-
-    $(document).ready(function() {
-    $('#htable').DataTable({
-      "bSort": false
-});
-     $('#htable2').DataTable({
-      "bSort": false
-});
-} );
-
-
-     $(document).ready(function() {
-    $('#ventasTable').DataTable({
-     "order": [[ 0, "desc" ]],
-     dom: 'Bfrtip',
-      buttons: [
-            'copy', 'csv', 'excel', 'pdf', 'print'
-        ]
-});
-} );
 
      $(document).ready(function() {
     $('#detalleVenta').DataTable({

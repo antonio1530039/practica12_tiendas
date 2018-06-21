@@ -8,7 +8,7 @@
 <head>
   <title>Login</title>
 </head>
-<body style="background-color:gray">
+<body >
   <div class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
@@ -18,7 +18,7 @@
   <div class="card">
     <div class="card-body login-card-body">
       <div class="login-logo">
-    <b>Sistema de Control de Inventario</b>
+    <b>Sistema de Comprobantes</b>
   </div>
       <p class="login-box-msg">Identificate para iniciar sesion</p>
       <form action="" method="post">

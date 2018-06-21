@@ -4,31 +4,24 @@ class Enlaces{
 	//metodo publico que dado un nombre de enlace, retorna el modulo que sera incluido o mostrado 
 	public function enlacesPaginasModel($enlace){
 		
-		if($enlace == "dashboard" || $enlace == "productos" || $enlace == "categorias" || $enlace == "usuarios" || $enlace == "movimiento_inventario" || $enlace == "tiendas"){
+		if($enlace == "grupos" || $enlace == "alumnas" || $enlace == "pagos"){
 			$module = "view/$enlace/$enlace.php";
-		}else if($enlace == "logout"){
-			$module = "model/logout.php";
+		}else if($enlace == "registro_grupo" || $enlace == "editar_grupo"){
+			$module = "view/grupos/$enlace.php";
+		}else if($enlace == "registro_alumna" || $enlace == "editar_alumna"){
+			$module = "view/alumnas/$enlace.php";
+		}else if($enlace == "editar_pago"){
+			$module = "view/pagos/$enlace.php";
+		}
+		else if($enlace == "registro_comprobante" || $enlace == "login"){
+			$module = "view/$enlace.php";
+		}else if($enlace == "logout" || $enlace == "aprobar_pago"){
+			$module = "controller/$enlace.php";
 		}else if($enlace == "borrar"){
-			$module = "model/borrar.php";
-	    }else if($enlace == "editar_producto" || $enlace == "registro_producto"){
-	    	$module = "view/productos/$enlace.php";
-	    }else if($enlace == "editar_categoria" || $enlace == "registro_categoria"){
-	    	$module = "view/categorias/$enlace.php";
-	    }else if($enlace == "editar_usuario" || $enlace == "registro_usuario"){
-	    	$module = "view/usuarios/$enlace.php";
-	    }else if($enlace == "editar_tienda" || $enlace == "registro_tienda"){
-	    	$module = "view/tiendas/$enlace.php";
-	    }
-	    else if($enlace == "login"){
-	      $module = "view/login.php";
-	    }
-	    else if($enlace == "ingresar_tienda" || $enlace == "desactivar_tienda" || $enlace == "activar_tienda"){
-	      $module = "controller/$enlace.php";
-	    }else if($enlace == "ventas" || $enlace == "detalle_venta" || $enlace == "registro_venta"){
-	      $module = "view/ventas/$enlace.php";
-	    }
+			$module = "controller/$enlace.php";
+		}
 		else{
-			$module = "view/dashboard/dashboard.php";
+			$module = "view/registro_comprobante.php";
 		}
 		return $module;
 	}
