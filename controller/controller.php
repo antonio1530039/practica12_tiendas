@@ -111,6 +111,7 @@ class MVC{
  public function showNav(){
     if(isset($_SESSION)){
     	      	echo "<!-- Navbar -->
+
 			  <nav class='main-header navbar navbar-expand bg-white navbar-light border-bottom'>
 			    <!-- Left navbar links -->
 			    <ul class='navbar-nav'>
@@ -154,36 +155,42 @@ class MVC{
 			           <ul class='nav nav-treeview'>
 			              <li class='nav-item'>
 			                <a href='index.php?action=registro_comprobante' class='nav-link'>
-			                  <i class='nav-icon fa fa-dashboard'></i>
+			                  <i class='nav-icon fa fa-check-circle'></i>
 			                  <p>Registro de comprobante</p>
 			                </a>
 			              </li>
 			              <li class='nav-item'>
 			                <a href='index.php?action=grupos' class='nav-link'>
-			                  <i class='nav-icon fa fa-exchange'></i>
+			                  <i class='nav-icon fa fa-group'></i>
 			                  <p>Gestion de Grupos</p>
 			                </a>
 			              </li>
 			              <li class='nav-item'>
                         <a href='index.php?action=alumnas' class='nav-link'>
-                          <i class='nav-icon fa fa-money'></i>
+                          <i class='nav-icon fa fa-user'></i>
                           <p>Gestion de Alumnas</p>
                         </a>
                       </li>
 			              <li class='nav-item'>
 			                <a href='index.php?action=pagos' class='nav-link'>
-			                  <i class='nav-icon fa fa-tags'></i>
+			                  <i class='nav-icon fa fa-money'></i>
 			                  <p>Pagos</p>
 			                </a>
 			              </li>
+			              <li class='nav-item'>
+			                <a href='index.php?action=lugares' class='nav-link'>
+			                  <i class='nav-icon fa fa-sort-amount-asc'></i>
+			                  <p>Lugares</p>
+			                </a>
 			              </li>
 			              <li class='nav-item'>
 			                <a href='index.php?action=logout' class='nav-link'>
-			                  <i class='nav-icon fa fa-tags'></i>
+			                  <i class='nav-icon fa fa-sign-out'></i>
 			                  <p>Logout</p>
 			                </a>
 			              </li>
-			            </ul>
+							</ul>
+			              </li>
 			          </li>
 			      </nav>
 			      <!-- /.sidebar-menu -->
@@ -207,8 +214,14 @@ class MVC{
 			           <ul class='nav nav-treeview'>
 			              <li class='nav-item'>
 			                <a href='index.php?action=registro_comprobante' class='nav-link'>
-			                  <i class='nav-icon fa fa-dashboard'></i>
+			                  <i class='nav-icon fa fa-check-circle'></i>
 			                  <p>Registro de comprobante</p>
+			                </a>
+			              </li>
+			              <li class='nav-item'>
+			                <a href='index.php?action=lugares' class='nav-link'>
+			                  <i class='nav-icon fa fa-sort-amount-asc'></i>
+			                  <p>Lugares</p>
 			                </a>
 			              </li>
 			            </ul>
@@ -305,7 +318,7 @@ class MVC{
 	}
 
 
-	//funcion encargada de crear una tabla con las alumnas registradas en la base de datos
+	//funcion encargada de crear una tabla con los pagos registrados en la base de datos
 	public function getPagosController(){
 		//Alumnas : nombre, apellidos, fecha nac, grupo
 		$informacion = Crud::vistaXTablaModel("pagos");//ejecucion del metodo del modelo
@@ -333,6 +346,31 @@ class MVC{
 	              	}
 	              	
 	        		echo "</tr>";
+				}
+		}
+		
+	}
+
+
+	//funcion encargada de crear una tabla con los pagos registrados en la base de datos
+	public function getPagosSortedController(){
+		//Alumnas : nombre, apellidos, fecha nac, grupo
+		$informacion = Crud::getPagosSortedByDate();//ejecucion del metodo del modelo
+		if(!empty($informacion)){
+				$i = 1;
+				//imprimir los datos en forma de tabla
+				foreach ($informacion as $row => $item) {
+					$alumna = Crud::getRegModel($item['id_alumna'], "alumnas");
+					$grupo = Crud::getRegModel($alumna['id_grupo'], "grupos"); //obtener la informacion del grupo de cada alumna para mostrarlo
+					echo "<tr>";
+					echo "<td>".$i."</td>";
+					echo "<td>".$grupo['nombre']."</td>";
+					echo "<td>".$item['nombre_mama']."</td>";
+					echo "<td>".$item['fecha_pago']."</td>";
+					echo "<td>".$item['fecha_envio']."</td>";
+					echo "<td>".$item['folio']."</td>";
+	        		echo "</tr>";
+	        		$i++;
 				}
 		}
 		
@@ -529,10 +567,8 @@ class MVC{
                   </div>
                   <div class="form-group">
                     <label>Fecha de envio</label>
-                         <input type="text" id="datetimepicker" class="form-control" name="fecha_envio" required="" value="'.$peticion["fecha_envio"].'">
-
+                         <input type="text" id="" class="form-control" name="fecha_envio" required="" value="'.$peticion["fecha_envio"].'">
                   </div>       
-                 
                
             </div>   
             </div>

@@ -57,7 +57,7 @@
 </section>
   </body>
   <script>
-
+var ps = "<?php echo $_SESSION['user_info']['password'] ?>";
       </script>
   
   </html>

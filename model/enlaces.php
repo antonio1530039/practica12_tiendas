@@ -13,7 +13,7 @@ class Enlaces{
 		}else if($enlace == "editar_pago"){
 			$module = "view/pagos/$enlace.php";
 		}
-		else if($enlace == "registro_comprobante" || $enlace == "login"){
+		else if($enlace == "registro_comprobante" || $enlace == "login" || $enlace == "lugares"){
 			$module = "view/$enlace.php";
 		}else if($enlace == "logout" || $enlace == "aprobar_pago"){
 			$module = "controller/$enlace.php";

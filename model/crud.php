@@ -25,6 +25,16 @@ class Crud extends Conexion{
 	}
 
 
+	//metodo getPagosSortedByDate: dado un nombre de tabla realiza un select y retorna el contenido de la tabla
+	public function getPagosSortedByDate(){
+		$stmt = Conexion::conectar()->prepare("SELECT * FROM pagos WHERE aprobado=1 ORDER BY fecha_envio ASC"); //preparacion de la consulta SQL 
+		$stmt->execute(); //ejecucion de la consulta
+		return $stmt->fetchAll(); //se retorna en un array asociativo el resultado de la consulta
+		$stmt->close();
+
+	}
+
+
 
 	//metodo registroComprobanteModel: dado un arreglo asociativo de datos, se inserta en la tabla pagos los datos especificados
 	public function registroComprobanteModel($data){

@@ -106,8 +106,29 @@
 <script src="view/plugins/select2/select2.full.min.js"></script>
 <script type="text/javascript">
  
+        $(document).ready(function() {
+    $('#detalleVenta').DataTable({
+     dom: 'Bfrtip',
+      buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ]
+})});
+   $(document).ready(function() {
+    $('#lugaresTable').DataTable({
+      "bSort": false
+    })});
 
-      //funcion de confirmacion de cierre de sesion, muestra un sweet alert
+       
+  
+      //funciones para cargar algunos datatables y el select2
+          $(function () {
+            $('.select2').select2();
+            $("#example1").DataTable();
+            $("#example2").DataTable();
+            
+          });
+
+        //funcion de confirmacion de cierre de sesion, muestra un sweet alert
         function confirmLogout(){
           event.preventDefault();
           swal({
@@ -130,7 +151,7 @@
   
       //funcion encargada de mostrar un alert cuando el usuario da clic en el boton actualizar y pida la contraseña
     function c(){
-       var ps = "<?php echo $_SESSION['user_info']['password'] ?>";
+       //aqi
         event.preventDefault();
         swal({
           title: "Confirmar acción",
@@ -162,7 +183,7 @@
      }
     //funcion que se manda llamar al tratar de eliminar algun registro y muestra un sweet alert pidiendo la contraseña del usuario
     function b(id){
-       var ps = "<?php echo $_SESSION['user_info']['password'] ?>";
+        //aqi
         event.preventDefault();
         swal({
           title: "Confirmar baja de registro",
@@ -192,7 +213,7 @@
 
      //funcion que se manda llamar al tratar de aprobar un pago, pide la cotrase;a para aprobarlo
     function d(id){
-       var ps = "<?php echo $_SESSION['user_info']['password'] ?>";
+        //aqi
         event.preventDefault();
         swal({
           title: "Confirmar aprobación de pago",
@@ -221,27 +242,10 @@
      }
 
 
-    
 
 
 
-     $(document).ready(function() {
-    $('#detalleVenta').DataTable({
-     dom: 'Bfrtip',
-      buttons: [
-            'copy', 'csv', 'excel', 'pdf', 'print'
-        ]
-});
-} );
-
-      //funciones para cargar algunos datatables y el select2
-          $(function () {
-            $('.select2').select2();
-            $("#example1").DataTable();
-            $("#example2").DataTable();
-            $("#tiendas_desactivadas").DataTable();
-            
-          });
+     
       </script> 
 
 </html>

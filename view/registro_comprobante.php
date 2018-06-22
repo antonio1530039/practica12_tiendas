@@ -36,16 +36,16 @@
         <form role="form" method="post" enctype="multipart/form-data">
         <div class="row">
           <!-- left column -->
-          <div class="col-sm-6">
+          <div class="col-sm-12">
             <!-- general form elements -->
             <div class="card card-primary">
                <div class="card-header">
                         <h3 class="card-title">Por favor, Ingresa la información del comprobante</h3>
                 </div>
-              <!-- /.card-header -->
-              <!-- form start -->
                 <div class="card-body login-card-body">
-                  <div class="form-group">
+                  <div class="row">
+                    <div class="col-6">
+                      <div class="form-group">
                     <p>
                     <label>Grupo</label>
                     <select class="form-control select2" name="grupo" id="grupo" required="" onchange="cambioGrupo();">
@@ -75,24 +75,14 @@
                    
                   </p>
                   </div>
-               
-            </div>   
-            </div>
-            <!-- -->
-            </div> 
+                    </div>
 
-
-            <!-- left column -->
+                     <!-- left column -->
           <div class="col-sm-6">
-            <!-- general form elements -->
-            <div class="card card-primary">
-              <!-- /.card-header -->
-              <!-- form start -->
-                <div class="card-body login-card-body">
                   <div class="form-group">
                     <p>
                     <label>Foto del comprobante</label><br>
-                      <input type="file" name="fileToUpload" id="fileToUpload" class="form-control" required="">
+                      <input type="file" name="fileToUpload" id="fileToUpload" class="form-control btn btn-info" required="">
                   </p>
                   </div>
                   <div class="form-group">
@@ -120,12 +110,21 @@
                   <br>
                   
                    <input type="submit" name="btn_agregar" value="Registrar" class="btn btn-success" onclick="veri();" style="float: right;">
-            
+            <!-- -->
+            </div> 
+
+
+
+                  </div>
+                  
                
             </div>   
             </div>
             <!-- -->
             </div> 
+
+
+           
             </div>
 </div>
 </div>

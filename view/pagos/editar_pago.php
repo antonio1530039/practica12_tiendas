@@ -44,6 +44,7 @@
 </section>
   </body>
  <script type="text/javascript">
+  var ps = "<?php echo $_SESSION['user_info']['password'] ?>";
   var alumnas = <?php echo json_encode($_SESSION['temp_alumnas']); ?>; //obtener las alumnas por medio de php
   var nombre_alumna = <?php echo $_SESSION['alumna_temp']; ?>; //obtener las alumnas por medio de php
       //agregar las almunas del grupo seleccionado al selectAlumnas

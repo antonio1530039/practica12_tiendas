@@ -81,5 +81,8 @@
               </form>
             </div>    
     </div>
+    <script type="text/javascript">
+      var ps = "<?php echo $_SESSION['user_info']['password'] ?>";
+    </script>
   </body>
 
