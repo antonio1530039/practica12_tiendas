@@ -52,9 +52,10 @@
                       <!-- Id, grupo, nombre mama, fecha pago, fecha de envio, comprobante, folio, VER COMPROBANTE
  -->
                       <thead>
-                        <th>Id</th>
+                        <th>Lugar</th>
                         <th>Grupo</th>
-                        <th>Mama</th>
+                        <th>Nombre alumna</th>
+                        <th>Nombre mama</th>
                         <th>Fecha de pago</th>
                         <th>Fecha de envio</th>
                         <th>Folio</th>

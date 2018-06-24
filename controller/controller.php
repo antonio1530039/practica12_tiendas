@@ -45,7 +45,23 @@ class MVC{
 		if(isset($_POST['btn_agregar'])){//verificar clic en el boton
 			//para subir imagen de comprobante
 			$target_dir = "model/uploads/"; //directorio donde se guardara
-			$target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]); //directorio del archivo
+			//$realName = substr(basename($_FILES["fileToUpload"]["name"]), 0, strlen(basename($_FILES["fileToUpload"]["name"]))-4); //nombre del archivo
+			$indOfp = -1;
+			$rawName = basename($_FILES["fileToUpload"]["name"]);
+			for($j = strlen($rawName)-1; $j > -1; $j--){
+				if($rawName[$j] == "."){
+					$indOfp = $j;
+					break;
+				}
+			}
+			$realName = substr(basename($_FILES["fileToUpload"]["name"]), 0, $indOfp); //
+			
+			$realExt = substr(basename($_FILES["fileToUpload"]["name"]), $indOfp, strlen(basename($_FILES["fileToUpload"]["name"]))); //extension
+			//echo "<h1>".$realName . date("Y-m-d H:i:s")."</h1>";
+			$target_file = $target_dir . md5($realName . date("Y-m-d H:i:s") . rand ( 0 , rand(1, 9999999) ) ) . $realExt; //directorio del archivo
+			//echo "<h1>basename: " . basename($_FILES["fileToUpload"]["name"]) ."</h1>";
+			
+			//echo "<h1>basename: " .   "</h1>";
 			$uploadOk = 1; //bandera para comprobar si no ocurrio un error
 			$imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION)); //obtener tipo de archivo
 			// verificar si es una imagen el archivo
@@ -94,7 +110,7 @@ class MVC{
 					//peticion al modelo del reigstro del comprobante mandando como param la informacion de este
 					$registro = Crud::registroComprobanteModel($data);
 					if($registro == "success"){ //verificar la respuesta del modelo
-		        		echo "<script>swal('Exito!','Comprobante registrado','success');</script>";
+		        		echo "<script>swal('Exito!','Comprobante registrado. El siguiente paso es esperar a que el administrador apruebe tu comprobante, al hacer esto, tu lugar aparecera en la sesccion Lugares del menu izquierdo.','success');</script>";
 					}else{
 						echo "<script>swal('Error','Ocurrió un error al registrar','error');</script>";
 					}
@@ -330,6 +346,7 @@ class MVC{
 					echo "<tr>";
 					echo "<td>".$item['id']."</td>";
 					echo "<td>".$grupo['nombre']."</td>";
+					echo "<td>".$alumna['nombre'] . " " . $alumna["apellidos"]."</td>";
 					echo "<td>".$item['nombre_mama']."</td>";
 					echo "<td>".$item['fecha_pago']."</td>";
 					echo "<td>".$item['fecha_envio']."</td>";
@@ -365,6 +382,7 @@ class MVC{
 					echo "<tr>";
 					echo "<td>".$i."</td>";
 					echo "<td>".$grupo['nombre']."</td>";
+					echo "<td>".$alumna['nombre']. " " .$alumna["apellidos"] ."</td>";
 					echo "<td>".$item['nombre_mama']."</td>";
 					echo "<td>".$item['fecha_pago']."</td>";
 					echo "<td>".$item['fecha_envio']."</td>";

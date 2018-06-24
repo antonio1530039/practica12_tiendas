@@ -58,6 +58,7 @@
                       <thead>
                         <th>Id</th>
                         <th>Grupo</th>
+                        <th>Alumna</th>
                         <th>Mama</th>
                         <th>Fecha de pago</th>
                         <th>Fecha de envio</th>

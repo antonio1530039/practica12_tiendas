@@ -1,7 +1,7 @@
 <?php
 	//se incluyen los archivos de modelo y controlador
-	require_once("model/crud.php");
-	require_once("controller/controller.php");
+	//require_once("model/crud.php");
+	//require_once("controller/controller.php");
 
 	//se crea la instancia del controlador
 	$controller = new MVC();

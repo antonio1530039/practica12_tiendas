@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 21-06-2018 a las 05:13:32
+-- Tiempo de generación: 24-06-2018 a las 09:37:22
 -- Versión del servidor: 10.1.26-MariaDB
 -- Versión de PHP: 7.1.9
 
@@ -43,7 +43,8 @@ CREATE TABLE `alumnas` (
 INSERT INTO `alumnas` (`id`, `nombre`, `apellidos`, `fecha_nacimiento`, `id_grupo`) VALUES
 (4, 'Karla Sofia', 'Chin Wong Un', '2018-06-01', 4),
 (7, 'Julia', 'Ruiz', '2018-06-28', 4),
-(8, 'Sofia', 'Gonzalez', '2018-06-21', 5);
+(8, 'Sofia', 'Gonzalez', '2018-06-21', 5),
+(9, 'Mariana', 'Hinojosa', '2018-06-21', 6);
 
 -- --------------------------------------------------------
 
@@ -62,7 +63,8 @@ CREATE TABLE `grupos` (
 
 INSERT INTO `grupos` (`id`, `nombre`) VALUES
 (4, 'L'),
-(5, '3-B');
+(5, '3-B'),
+(6, '2-1');
 
 -- --------------------------------------------------------
 
@@ -87,8 +89,9 @@ CREATE TABLE `pagos` (
 --
 
 INSERT INTO `pagos` (`id`, `id_grupo`, `id_alumna`, `nombre_mama`, `fecha_pago`, `fecha_envio`, `imagen_comprobante`, `folio`, `aprobado`) VALUES
-(8, 5, 8, 'Mama de  Sofia', '2018-06-20', '2018-06-21 05:10:24', 'model/uploads/aalias_line.jpg', 31, 0),
-(9, 4, 7, 'Mama de Julia Ruiz', '2018-06-30', '2018-06-21 05:10:44', 'model/uploads/bar_pattern2.png', 101, 0);
+(1, 4, 4, 'Mama de Karla Chin Wong', '2018-06-13', '2018-06-24 09:30:05', 'model/uploads/693ddf6bdfc7bc12439fbdff93f5a232.jpg', 12, 1),
+(2, 6, 9, 'Magda Tijerina', '2018-06-24', '2018-06-24 09:30:40', 'model/uploads/64e72184239b4d6a76d132b717f9542d.png', 122, 1),
+(3, 4, 7, 'Mama De Julia Ruiz', '2018-06-24', '2018-06-24 09:15:29', 'model/uploads/2dd31102a2dd91ff8c566a06c976f1d1.jpeg', 22, 1);
 
 -- --------------------------------------------------------
 
@@ -148,19 +151,19 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `alumnas`
 --
 ALTER TABLE `alumnas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `grupos`
 --
 ALTER TABLE `grupos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `pagos`
 --
 ALTER TABLE `pagos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
